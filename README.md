@@ -1,58 +1,65 @@
 # Windows Failed Logon Investigation Using Splunk
 
-A beginner SOC investigation project analysing Windows failed-logon events using Splunk Search Processing Language (SPL).
+A beginner SOC analyst portfolio project investigating Windows failed-logon events using Splunk Search Processing Language (SPL).
 
 ## Project Overview
 
-This project explores Windows Security Event ID **4625**, which records failed logon attempts. The investigation uses Splunk searches and statistical commands to summarise authentication failures and review their distribution over time.
+Windows Event ID **4625** records failed logon attempts. This project analyses matching events from a training-lab dataset to examine authentication-related fields, count events, and review their distribution over time.
 
 ## Objectives
 
-- Search for failed-logon events.
-- Count matching events within a selected time range.
+- Search Windows failed-logon events.
+- Count events within a selected time range.
 - Group events by status, substatus, and logon type.
-- Review the hourly distribution of events.
-- Document findings and investigation limitations.
+- Review hourly event patterns.
+- Document findings, limitations, and recommended follow-up steps.
 
 ## Tools and Technologies
 
 - Splunk Enterprise
 - Search Processing Language (SPL)
 - Windows Security event logs
+- Windows Event ID 4625
 
 ## Investigation Workflow
 
-1. Search for Event ID 4625.
-2. Calculate the total number of matching events.
-3. Group events by available authentication-related fields.
-4. Review the hourly event timeline.
-5. Record findings without assuming that every failure is malicious.
+1. Search for Event ID 4625 in the `main` index.
+2. Count matching events.
+3. Group events by authentication-related fields.
+4. Visualise hourly event counts.
+5. Inspect a sample event and document the findings.
 
-## Key Finding
+## Key Findings
 
-In the selected seven-day training-lab search window, 316 matching events were observed. One hourly bucket contained 310 events. This concentration warrants further investigation but does not, by itself, establish malicious activity.
+- **316** matching events were returned in the selected seven-day training-lab window.
+- One hourly time bucket contained **310** events.
+- A source IP address was not available in the fields inspected.
 
-## Limitations
-
-- A source IP address was not available in the inspected fields.
-- Some events had missing extracted field values.
-- Findings are specific to the dataset and selected time range.
-- The investigation did not independently confirm an attack.
+The concentration of events warrants further investigation but does not, by itself, confirm malicious activity.
 
 ## Project Structure
 
-- `evidence/` — approved, sanitised investigation screenshots
-- `queries/` — SPL queries and explanations
-- `notes/` — investigation notes and lessons learned
+- [`queries/README.md`](queries/README.md) — SPL queries and their purposes.
+- [`notes/README.md`](notes/README.md) — investigation notes and limitations.
+- [`notes/investigation-report.md`](notes/investigation-report.md) — investigation report and recommended follow-up.
+- `evidence/` — placeholder for approved, sanitised evidence if sharing is permitted.
 
 ## Skills Demonstrated
 
-- Basic SPL searching and filtering
+- Basic Splunk searching and filtering
 - Event counting and statistical grouping
-- Sorting and timeline analysis
+- Time-based event analysis
 - Security-log interpretation
-- Documentation of findings and limitations
+- Investigation documentation
+- Evidence-based reporting and recognition of limitations
+
+## Limitations
+
+- Results depend on the selected training dataset and time range.
+- Some events had missing extracted field values.
+- Source IP information was not available in the fields inspected.
+- No malicious activity was independently confirmed.
 
 ## Disclaimer
 
-This is a training-lab investigation created for learning purposes. Results describe the selected dataset and should not be interpreted as confirmation of a real security incident.
+This project uses training-lab data for educational purposes. The findings should not be interpreted as confirmation of a real security incident. Training screenshots have not been published pending confirmation of sharing permission.
