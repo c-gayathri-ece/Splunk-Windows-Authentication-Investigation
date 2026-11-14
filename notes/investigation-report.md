@@ -1,46 +1,46 @@
-# Windows Failed Logon Investigation Report
+# Investigation Report
+
+## Project
+End-to-End Windows Brute-Force & Privilege Escalation Detection (Splunk SPL)
 
 ## 1. Objective
-Analyse Windows failed-logon events in Splunk and identify patterns that may require further investigation.
+Investigate Windows authentication failures, identify repeated failed-logon activity, and correlate successful logons with special privilege assignments using Splunk.
 
-## 2. Data and Scope
-- **Platform:** Splunk Enterprise
-- **Index:** `main`
-- **Event ID:** 4625 — failed logon
-- **Time window:** Selected seven-day training-lab search window
+## 2. Investigation
 
-## 3. Queries Performed
-- Counted matching failed-logon events.
-- Grouped events by status, substatus, and logon type.
-- Visualised hourly event counts.
-- Inspected a sample event.
+- Searched Event ID 4625 to identify failed logons.
+- Analysed failed and successful logon events.
+- Used a five-minute time window to identify repeated failed attempts.
+- Inspected raw events for additional context.
+- Analysed Event ID 4672 for special privilege assignments.
+- Correlated Event IDs 4624 and 4672 using the Logon ID.
 
-See [`../queries/README.md`](../queries/README.md) for the SPL queries.
+## 3. Findings
 
-## 4. Findings
-- **316** matching events were returned during the selected time window.
-- One hourly time bucket contained **310** events.
-- The inspected results included status, substatus, and logon-type fields.
-- A source IP address was not available in the fields inspected.
+- 2,121 failed-logon events (4625) were found in the selected search.
+- Repeated failed-logon activity was identified and selected for investigation.
+- Special privilege assignment events (4672) were observed.
+- A successful network logon (4624) and special privilege assignment (4672) were correlated to the same logon session.
+- The observed activity requires validation against expected account behaviour.
 
-## 5. Analysis
-The concentration of events in one hourly bucket may indicate a period of elevated authentication failures. The available findings are insufficient to determine the cause or confirm malicious activity.
+## 4. Conclusion
 
-## 6. Recommended Follow-up
-1. Review raw events within the high-volume hour.
-2. Identify affected accounts where the required fields are available.
-3. Check source host or IP information if available.
-4. Correlate with other authentication and security logs.
-5. Determine whether the activity is expected or suspicious before drawing conclusions.
+The investigation demonstrated how Splunk can be used to monitor failed authentication attempts, identify repeated activity, inspect privileged logons, and correlate Windows security events.
 
-## 7. Limitations
-- Findings are specific to the selected training dataset and time window.
-- Some events had missing extracted field values.
-- Source IP information was not available in the inspected fields.
-- No real security incident was independently confirmed.
+The available lab evidence does not independently confirm a brute-force attack or malicious privilege escalation.
 
-## 8. Conclusion
-This investigation demonstrates basic Splunk searching, event aggregation, timeline analysis, and cautious interpretation of authentication failures.
+## 5. Recommended Follow-up
 
-## Disclaimer
-This is an educational training-lab project. The findings do not confirm a real security incident. No training-lab screenshots are included in this report.
+- Validate whether the account activity was expected.
+- Investigate source systems and authentication patterns.
+- Review account privileges and access requirements.
+- Monitor repeated authentication failures.
+- Escalate suspicious activity for further investigation when supported by evidence.
+
+## 6. Environment
+
+Splunk Enterprise and Windows Security Event Logs from a training-lab dataset.
+
+## 7. Disclaimer
+
+This is an educational lab investigation, not a confirmed real-world security incident.
