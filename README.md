@@ -1,65 +1,76 @@
-# Windows Failed Logon Investigation Using Splunk
-
-A beginner SOC analyst portfolio project investigating Windows failed-logon events using Splunk Search Processing Language (SPL).
+# End-to-End Windows Brute-Force & Privilege Escalation Detection (Splunk SPL)
 
 ## Project Overview
 
-Windows Event ID **4625** records failed logon attempts. This project analyses matching events from a training-lab dataset to examine authentication-related fields, count events, and review their distribution over time.
+A SOC Analyst L1 portfolio project using Splunk Enterprise and SPL to investigate Windows authentication failures, identify repeated failed-logon activity, and correlate successful logons with special privilege assignments.
+
+The project uses Windows Security Event Logs from a training-lab dataset.
 
 ## Objectives
 
-- Search Windows failed-logon events.
-- Count events within a selected time range.
-- Group events by status, substatus, and logon type.
-- Review hourly event patterns.
-- Document findings, limitations, and recommended follow-up steps.
+- Investigate Windows failed logon events (Event ID 4625).
+- Analyse successful logons (Event ID 4624).
+- Identify repeated failed-logon activity within short time windows.
+- Monitor special privilege assignments (Event ID 4672).
+- Correlate logon and privilege events using Logon IDs.
+- Document findings, limitations, and recommended investigation steps.
 
 ## Tools and Technologies
 
 - Splunk Enterprise
-- Search Processing Language (SPL)
-- Windows Security event logs
-- Windows Event ID 4625
+- Splunk Search Processing Language (SPL)
+- Windows Security Event Logs
+- Windows Event IDs 4625, 4624 and 4672
 
 ## Investigation Workflow
 
-1. Search for Event ID 4625 in the `main` index.
-2. Count matching events.
-3. Group events by authentication-related fields.
-4. Visualise hourly event counts.
-5. Inspect a sample event and document the findings.
+1. Search Windows failed-logon events using Event ID 4625.
+2. Count and analyse failed and successful authentication events.
+3. Group failed logons by account and review hourly activity.
+4. Detect repeated failed attempts within five-minute windows.
+5. Inspect raw failed-logon events for additional context.
+6. Investigate Event ID 4672 for special privilege assignments.
+7. Correlate Event IDs 4624 and 4672 using the same Logon ID.
+8. Document findings and recommend further validation.
 
 ## Key Findings
 
-- **316** matching events were returned in the selected seven-day training-lab window.
-- One hourly time bucket contained **310** events.
-- A source IP address was not available in the fields inspected.
+- **2,121** Event ID 4625 events were returned in a selected lab-data search.
+- Repeated failed-logon activity was identified using a five-minute detection window.
+- One five-minute bucket contained a high volume of failed attempts and was selected for further inspection.
+- Event ID 4672 records showed special privilege assignments.
+- A successful network logon (Event ID 4624) was correlated with an Event ID 4672 using the same Logon ID.
+- The correlated session involved the account `Arcsight3`, with source address `192.168.0.125` and Logon Type 3.
 
-The concentration of events warrants further investigation but does not, by itself, confirm malicious activity.
+These findings demonstrate investigation and event correlation. They do not independently confirm a brute-force attack or malicious privilege escalation.
 
 ## Project Structure
 
-- [`queries/README.md`](queries/README.md) — SPL queries and their purposes.
-- [`notes/README.md`](notes/README.md) — investigation notes and limitations.
-- [`notes/investigation-report.md`](notes/investigation-report.md) — investigation report and recommended follow-up.
-- `evidence/` — placeholder for approved, sanitised evidence if sharing is permitted.
+- `queries/README.md` — SPL queries and their purposes.
+- `notes/README.md` — Investigation notes and limitations.
+- `notes/investigation-report.md` — Investigation report and recommendations.
+- `evidence/` — Sanitised screenshots and approved lab evidence.
 
 ## Skills Demonstrated
 
-- Basic Splunk searching and filtering
-- Event counting and statistical grouping
+- Splunk searching and filtering
+- Windows authentication event analysis
+- Failed-logon monitoring
 - Time-based event analysis
-- Security-log interpretation
-- Investigation documentation
-- Evidence-based reporting and recognition of limitations
+- Repeated authentication failure detection
+- Special privilege event monitoring
+- Event correlation using Logon IDs
+- Security investigation documentation
+- Evidence-based reporting
 
 ## Limitations
 
-- Results depend on the selected training dataset and time range.
-- Some events had missing extracted field values.
-- Source IP information was not available in the fields inspected.
-- No malicious activity was independently confirmed.
+- Results depend on the training dataset and selected time range.
+- Some extracted fields were missing or inconsistently mapped.
+- Repeated or high-volume events require validation against the original event records.
+- Event ID 4672 alone does not indicate malicious privilege escalation.
+- No confirmed security incident was established from the available evidence.
 
 ## Disclaimer
 
-This project uses training-lab data for educational purposes. The findings should not be interpreted as confirmation of a real security incident. Training screenshots have not been published pending confirmation of sharing permission.
+This project uses training-lab data for educational and portfolio purposes. Findings are not confirmation of a real-world security incident. Evidence should be sanitised before public sharing.
