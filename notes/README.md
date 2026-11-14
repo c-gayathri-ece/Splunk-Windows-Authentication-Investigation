@@ -1,44 +1,28 @@
-# Windows Failed Logon Investigation Using Splunk
+# Investigation Notes
 
-## Project Objective
-Investigate Windows failed-logon events using Splunk to understand authentication failures, event patterns, and their distribution over time.
+## Windows Authentication Events
 
-## Tools and Technologies
-- Splunk Enterprise
-- Windows Security event logs
-- Search Processing Language (SPL)
-- Event ID 4625 — failed logon
+| Event ID | Description | Investigation purpose |
+|---|---|---|
+| 4625 | Failed logon | Identify authentication failures |
+| 4624 | Successful logon | Review successful authentication |
+| 4672 | Special privileges assigned to a new logon | Monitor privileged sessions |
 
-## Investigation Process
-1. Searched for Event ID 4625 in the `main` index.
-2. Counted matching events within the selected seven-day time range.
-3. Grouped events by status, substatus, and logon type.
-4. Reviewed the hourly distribution using a timechart.
-5. Inspected a sample event to review available fields.
+## Detection Approach
 
-## Key Findings
-- The search returned 316 matching events in the selected seven-day window.
-- One hourly time bucket contained 310 events.
-- The inspected results included status and logon-type fields.
-- A source IP address was not available in the fields inspected.
+- Review failed logons by account.
+- Identify repeated failures within five-minute windows.
+- Examine hourly authentication patterns.
+- Inspect raw Windows security events.
+- Correlate successful logons and special privilege assignments using Logon IDs.
 
-## Interpretation
-The concentration of events in one hourly bucket may indicate a period of elevated authentication failures. Additional investigation is needed to understand the cause. The observed pattern alone does not confirm an attack.
+## Important Investigation Notes
 
-## Limitations
-- Findings apply only to the selected training-lab dataset and time range.
-- Some events had missing extracted field values.
-- The source IP address was not available in the inspected fields.
-- No malicious activity was independently confirmed.
+- A high number of failed logons does not automatically confirm a brute-force attack.
+- Event ID 4672 does not automatically indicate malicious privilege escalation.
+- Event correlation helps establish whether events belong to the same logon session.
+- Findings must be validated against expected account and system behaviour.
 
-## Further Investigation
-- Review raw events around the hourly spike.
-- Identify affected accounts where the relevant fields are available.
-- Investigate source host or IP information if available.
-- Compare the activity with other relevant authentication and security logs.
+## Investigation Outcome
 
-## Conclusion
-This exercise demonstrates basic Splunk searching, event counting, field-based grouping, timeline analysis, and cautious interpretation of Windows failed-logon events.
-
-## Disclaimer
-This is a training-lab project for educational purposes. The findings do not confirm a real security incident.
+Repeated failed-logon activity and a successful logon correlated with a special privilege assignment were observed in the training dataset. No confirmed malicious activity was established.
