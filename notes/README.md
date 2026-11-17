@@ -9,7 +9,7 @@
 | 4672 | Special privileges assigned to a new logon | Monitor privileged sessions |
 | 4728 / 4732 | Member added to a privileged group | Check for privilege changes (none found) |
 
-## Detection Approach
+## Investigation Approach
 
 - Count failed and successful logons per target account.
 - Identify repeated failures within five-minute windows (5 or more per account and host).
